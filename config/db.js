@@ -3,23 +3,34 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 import "dotenv/config";
 import { MongoClient } from "mongodb";
-// import logger from "../utils/logger";
+
+let dbConnection = null;
 
 export const connectMongoDB = async () => {
+  if (dbConnection) return dbConnection;
+
   try {
     const mongoUri = process.env.MONGO_DB_CONNECTION || "";
 
     if (!mongoUri) {
-      // logger.error("MONGO_URI is missing in .env file");
+      console.log("MONGO_URI is missing in .env file");
       process.exit(1);
     }
 
-    await MongoClient.connect(mongoUri);
+    const client = await MongoClient.connect(mongoUri);
+    dbConnection = client.db("library");
     console.log("MongoDB Connected Successfully");
-    // logger.info("MongoDB Connected Successfully");
+    return dbConnection;
   } catch (error) {
     console.log(error);
     // logger.error(`MongoDB connection error: ${err.message}`);
     process.exit(1);
   }
+};
+
+export const getDB = () => {
+  if (!dbConnection) {
+    console.log("error db connectin");
+  }
+  return dbConnection;
 };
