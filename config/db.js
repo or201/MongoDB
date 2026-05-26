@@ -4,6 +4,9 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 import "dotenv/config";
 import { MongoClient } from "mongodb";
 
+const authors = process.env.AUTHORS_COLLECTION || "authors";
+const books = process.env.AUTHORS_BOOKS || "books";
+
 let dbConnection = null;
 
 export const connectMongoDB = async () => {
@@ -23,14 +26,27 @@ export const connectMongoDB = async () => {
     return dbConnection;
   } catch (error) {
     console.log(error);
-    // logger.error(`MongoDB connection error: ${err.message}`);
     process.exit(1);
   }
 };
 
 export const getDB = () => {
   if (!dbConnection) {
-    console.log("error db connectin");
+    throw new Error("Error to connected DB");
   }
   return dbConnection;
+};
+
+export const createIndexes = async () => {
+  const db = getDB();
+
+  await db.collection(books).createIndex({
+    name: "text",
+    description: "text",
+  });
+
+  await db.collection(books).createIndex({
+    pages: 1,
+  });
+  console.log("indexes created")
 };
