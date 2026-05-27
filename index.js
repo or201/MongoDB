@@ -13,6 +13,8 @@ const run = async () => {
       author.insertedId,
       100,
     );
-  } catch (error) {}
+  } catch (error) {
+    console.error(error)
+  }
 };
 run();

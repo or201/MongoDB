@@ -25,7 +25,7 @@ export const connectMongoDB = async () => {
     console.log("MongoDB Connected Successfully");
     return dbConnection;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     process.exit(1);
   }
 };
@@ -48,5 +48,5 @@ export const createIndexes = async () => {
   await db.collection(books).createIndex({
     pages: 1,
   });
-  console.log("indexes created")
+  console.log("indexes created");
 };
