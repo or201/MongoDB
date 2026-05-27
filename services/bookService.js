@@ -4,7 +4,8 @@ import { getDB } from "../config/db.js";
 const authorsCollection = process.env.AUTHORS_COLLECTION || "authors";
 const booksCollection = process.env.AUTHORS_BOOKS || "books";
 
-export const  = async (authorID) => {
+//task 1
+export const getBookByAuthor = async (authorID) => {
   const db = getDB();
 
   const author = await db.collection(authorsCollection).findOne({
@@ -20,8 +21,27 @@ export const  = async (authorID) => {
   return author.books;
 };
 
-export const getBookBySearch = async () => {
+//task 1
+export const getBookBySearch = async (SearchTerm) => {
+  const db = getDB();
+  const result = await db
+    .collection(booksCollection)
+    .find({ $text: { $search: SearchTerm } })
+    .toArray();
 
+  console.log(result);
+  return result;
 };
 
-export const getBooksSorted = async () => {};
+//task 1
+export const getBooksSorted = async () => {
+  const db = getDB();
+  const result = await db
+    .collection(booksCollection)
+    .find({ pages: { $gt: 250 } })
+    .sort({ pages: 1 })
+    .toArray();
+
+  console.log(result);
+  return result;
+};

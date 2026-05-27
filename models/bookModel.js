@@ -1,5 +1,5 @@
-import { getDB } from "../config/db.js";
 import { ObjectId } from "mongodb";
+import { getDB } from "../config/db.js";
 
 const booksCollection = process.env.AUTHORS_BOOKS || "books";
 const authorsCollection = process.env.AUTHORS_COLLECTION || "authors";
