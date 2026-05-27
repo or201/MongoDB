@@ -6,13 +6,13 @@ const run = async () => {
   try {
     await connectMongoDB();
     await createIndexes()
+   const author =  await createAuthor("J.", "K.R", 1990);
     await createBook(
       "H.P. 3",
       "lorem10 lorem10 lorem10 lorem10 lorem10 lorem10 ",
-      "J.K.R",
+      author.insertedId,
       100,
     );
-    await createAuthor("J.", "K.R", 1990);
   } catch (error) {}
 };
 run();
