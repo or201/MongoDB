@@ -1,7 +1,6 @@
-import "dotenv/config";
 import { getDB } from "../config/db.js";
 
-const collection = process.env.AUTHORS_COLLECTION || "authors";
+const authorsCollection = process.env.AUTHORS_COLLECTION || "authors";
 
 const createAuthor = async (fName, lName, birth) => {
   const db = getDB();
@@ -12,7 +11,7 @@ const createAuthor = async (fName, lName, birth) => {
     birth,
     books: [],
   };
-  const result = await db.collection(collection).insertOne(author);
+  const result = await db.collection(authorsCollection).insertOne(author);
   console.log("author", author.fName, author.lName, "created");
   return result;
 };

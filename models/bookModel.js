@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { getDB } from "../config/db.js";
 import { ObjectId } from "mongodb";
 
