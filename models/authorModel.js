@@ -10,8 +10,11 @@ const createAuthor = async (fName, lName, birth) => {
     fName,
     lName,
     birth,
+    books: [],
   };
-  await db.collection(collection).insertOne(author);
+  const result = await db.collection(collection).insertOne(author);
+  console.log("author", author.fName, author.lName, "created");
+  return result;
 };
 
 export { createAuthor };
