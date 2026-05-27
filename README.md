@@ -42,8 +42,7 @@ _(The collections are structured to provide the best average performance for the
 2. Initialize the project and install the native MongoDB driver (if not already done):
 
    ```bash
-   npm init -y
-   npm install mongodb
+   npm i
    ```
 
 ## Usage
