@@ -1,12 +1,12 @@
 {
-  "name": "mongodb",
+  "name": "library-management",
   "version": "1.0.0",
   "description": "MongoDB connection project using Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node index.js",
     "start": "node index.js",
-    "fix": "prettier . --write && npx organize-imports-cli ."
+    "fix": "prettier . --write && organize-imports-cli ."
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
   "homepage": "https://github.com/or201/MongoDB#readme",
   "dependencies": {
     "dotenv": "^17.4.2",
-    "mongodb": "^7.2.0"
+    "mongodb": "^7.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "organize-imports-cli": "^1.0.2",

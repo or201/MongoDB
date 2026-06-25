@@ -1,52 +1,71 @@
-import dns from "dns";
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
-
-import "dotenv/config";
 import { MongoClient } from "mongodb";
-
-const authors = process.env.AUTHORS_COLLECTION || "authors";
-const books = process.env.AUTHORS_BOOKS || "books";
+import { BOOKS_COLLECTION, DB_NAME, MONGO_URI } from "./constants.js";
 
 let dbConnection = null;
+let connectionPromise = null;
 
 export const connectMongoDB = async () => {
-  if (dbConnection) return dbConnection;
+  if (dbConnection) return dbConnection.db;
+
+  if (connectionPromise) {
+    const client = await connectionPromise;
+    return client.db(DB_NAME);
+  }
 
   try {
-    const mongoUri = process.env.MONGO_DB_CONNECTION || "";
-
-    if (!mongoUri) {
-      console.log("MONGO_URI is missing in .env file");
-      process.exit(1);
+    if (!MONGO_URI) {
+      throw new Error("MONGO_DB_CONNECTION is missing in .env file");
     }
 
-    const client = await MongoClient.connect(mongoUri);
-    dbConnection = client.db("library");
+    const client = new MongoClient(MONGO_URI);
+    connectionPromise = client.connect();
+    await connectionPromise;
+
+    dbConnection = {
+      db: client.db(DB_NAME),
+      client: client,
+    };
+
     console.log("MongoDB Connected Successfully");
-    return dbConnection;
+    connectionPromise = null;
+    return dbConnection.db;
   } catch (error) {
     console.error(error);
-    process.exit(1);
+
+    connectionPromise = null;
+    throw new Error("Failed to connect to mongoDB", { cause: error });
   }
 };
 
 export const getDB = () => {
   if (!dbConnection) {
-    throw new Error("Error to connected DB");
+    throw new Error("Failed to get database connection");
   }
-  return dbConnection;
+  return dbConnection.db;
 };
 
 export const createIndexes = async () => {
   const db = getDB();
-
-  await db.collection(books).createIndex({
+  await db.collection(BOOKS_COLLECTION).createIndex({
     name: "text",
     description: "text",
   });
 
-  await db.collection(books).createIndex({
+  await db.collection(BOOKS_COLLECTION).createIndex({
     pages: 1,
   });
+
+  await db.collection(BOOKS_COLLECTION).createIndex({
+    authorId: 1,
+  });
+
   console.log("indexes created");
+};
+
+export const closeMongoDB = async () => {
+  if (dbConnection && dbConnection.client) {
+    await dbConnection.client.close();
+    console.log("MongoDB Connection Closed");
+    dbConnection = null;
+  }
 };

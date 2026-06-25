@@ -1,17 +1,15 @@
-import { connectMongoDB, createIndexes } from "./config/db.js";
-import { getBooksSorted } from "./services/bookService.js";
+import { closeMongoDB, connectMongoDB, createIndexes } from "./config/db.js";
 
 const run = async () => {
   try {
     await connectMongoDB();
     await createIndexes();
 
-    // getBookByAuthor("6a16b544a9261dc337b7646a");
-    // getBookBySearch("Murder")
-    // getBooksSorted();
-    
+    await closeMongoDB();
   } catch (error) {
     console.error(error);
+    await closeMongoDB();
+    process.exit(1);
   }
 };
 run();
