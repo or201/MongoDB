@@ -1,0 +1,31 @@
+{
+  "name": "library-management",
+  "version": "1.0.0",
+  "description": "MongoDB connection project using Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "fix": "prettier . --write && organize-imports-cli ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/or201/MongoDB.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/or201/MongoDB/issues"
+  },
+  "homepage": "https://github.com/or201/MongoDB#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "mongodb": "^7.2.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "organize-imports-cli": "^1.0.2",
+    "prettier": "^3.8.3"
+  }
+}
