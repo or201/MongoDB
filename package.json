@@ -4,7 +4,6 @@
   "description": "MongoDB connection project using Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js",
     "start": "node index.js",
     "fix": "prettier . --write && organize-imports-cli ."
   },
